@@ -1,15 +1,15 @@
-export default asyncWrapper = (fn) => async (req, res, next) => {
+const asyncHandler = (fn) => async (req, res, next) => {
     try {
-        return await fn(req, res, next)
-    }
-    catch (error) {
-        console.log("API Exeption", error)
+        return await fn(req, res, next);
+    } catch (err) {
         return res
-            .status(err.status || 500)
+            .status(err.statusCode || 500)
             .json({
                 message: err.message,
-                statusCode: err.status || 500,
+                statusCode: err.statusCode,
                 success: false
-            })
+            });
     }
-}
+};
+
+export default asyncHandler;
